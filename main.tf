@@ -2,6 +2,16 @@ locals {
   prefix = "lab0"
 }
 
+locals {
+  REGION = "fra1"
+  IMAGE = {
+    DEBIAN = "debian-13-x64"
+  }
+  SIZE = {
+    SMALL  = "s-1vcpu-1gb"
+    MEDIUM = "s-2vcpu-2gb"
+  }
+}
 
 resource "digitalocean_ssh_key" "default" {
   name       = local.prefix
@@ -13,10 +23,10 @@ data "digitalocean_ssh_key" "ondrejsika" {
 }
 
 resource "digitalocean_droplet" "example" {
-  image  = "debian-13-x64"
+  image  = local.IMAGE.DEBIAN
   name   = "${local.prefix}-example"
-  region = "fra1"
-  size   = "s-1vcpu-1gb"
+  region = local.REGION
+  size   = local.SIZE.SMALL
   ssh_keys = [
     digitalocean_ssh_key.default.fingerprint,
     data.digitalocean_ssh_key.ondrejsika.fingerprint,
