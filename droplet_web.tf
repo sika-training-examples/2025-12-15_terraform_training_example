@@ -1,11 +1,12 @@
 module "web_vm" {
-  source = "./modules/vm"
+  source = "git::git@gitlab.sikademo.com:terraform/terraform.git//modules/vm"
 
   prefix = local.prefix
   image  = local.IMAGE.DEBIAN
   name   = "web"
   region = local.REGION
   size   = local.SIZE.MEDIUM
+  env    = "training"
   ssh_keys = [
     digitalocean_ssh_key.default.fingerprint,
     data.digitalocean_ssh_key.ondrejsika.fingerprint,

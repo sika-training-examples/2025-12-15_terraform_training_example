@@ -28,6 +28,10 @@ variable "ssh_keys" {
   type = list(string)
 }
 
+variable "env" {
+  type = string
+}
+
 resource "digitalocean_droplet" "this" {
   lifecycle {
     prevent_destroy = true
@@ -45,6 +49,7 @@ resource "digitalocean_droplet" "this" {
   ssh_keys = var.ssh_keys
   tags = [
     "created-${formatdate("YYYY-MM-DD-hh-mm-ss", timestamp())}",
+    "env-${var.env},"
   ]
 
   user_data = var.user_data
