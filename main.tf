@@ -36,3 +36,18 @@ resource "digitalocean_droplet" "example" {
 output "ip" {
   value = digitalocean_droplet.example.ipv4_address
 }
+
+resource "digitalocean_container_registry" "default" {
+  region                 = local.REGION
+  name                   = local.prefix
+  subscription_tier_slug = "starter"
+}
+
+resource "digitalocean_container_registry_docker_credentials" "default" {
+  registry_name = digitalocean_container_registry.default.name
+}
+
+output "registry_credentials" {
+  value     = digitalocean_container_registry_docker_credentials.default.docker_credentials
+  sensitive = true
+}
